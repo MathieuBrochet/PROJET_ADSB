@@ -10,7 +10,7 @@ Ts = 1*10^(-6);
 Ds = 1/Ts;
 moy_fft = 100;
 Fse = Ts/Te; % 20 échantillons
-NFFT = 256; % nombre de point par fft
+NFFT = 1000; % nombre de point par fft
 Nb = 5; % nombre de bits % nombre de FFT
 
 B = randi([0,1],1,NFFT*Nb);
@@ -34,19 +34,22 @@ sl = reshape(pk.',1,[]);
 [DSP] = Mon_Welch(sl,NFFT); % dsp experimentale
 %% affichage de la DSP
 
+
+f = linspace(-Fe/2,Fe/2,NFFT);
+
 figure(1);
-plot(log(DSP));
-title("Densité spectrale de puissance expérimentale de Sl");
-xlabel("fréquence");
-ylabel("Amplitude de Sl");
+semilogy(f,DSP);
+title('Densite spectrale de puissance experimentale de Sl');
+xlabel('frequence');
+ylabel('Amplitude de Sl');
 
 
 %% calcul DSP théorique
- f = linspace(-Fe/2,Fe/2,NFFT);
+
 %  dirac = zeros(1,256);
 %  dirac(128) = 0.0625;
  DSP_th = Ds^2/2 * (sinc(f/2).^2).*(sin(pi*f/2).^2); %DSP theorique
- DSP_th(nfft/2+1) = DSP_th(nfft
+ DSP_th(NFFT/2+1) = DSP_th(NFFT/2+1)+Ds/4;
  hold on;
  grid on;
 
@@ -54,9 +57,9 @@ ylabel("Amplitude de Sl");
  
  
  %% affichage DSP théorique 
-semilogy(f,DSP_th);
+semilogy(f,DSP_th*10000);
 %  plot(log(DSP_th));
- title("Densité spectrale de puissance théorique de Sl");
- xlabel("fréquence");
- ylabel("Amplitude de Sl");
+ title('Densité spectrale de puissance théorique de Sl');
+ xlabel('fréquence');
+ ylabel('Amplitude de Sl');
 
