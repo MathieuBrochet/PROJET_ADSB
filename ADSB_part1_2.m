@@ -46,10 +46,8 @@ ylabel('Amplitude de Sl');
 
 %% calcul DSP théorique
 
-%  dirac = zeros(1,256);
-%  dirac(128) = 0.0625;
  DSP_th = Ds^2/2 * (sinc(f/2).^2).*(sin(pi*f/2).^2); %DSP theorique
- DSP_th(NFFT/2+1) = DSP_th(NFFT/2+1)+Ds/4;
+ DSP_th(NFFT/2+1) = DSP_th(NFFT/2+1)+Ds/(4*10000);
  hold on;
  grid on;
 
