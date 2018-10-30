@@ -6,7 +6,7 @@ clc;
 
 %% Initialisation 
 Ts = 1*10^-6; % symbol period 
-Nb = 1000; % nb of symbols 
+Nb = 1000000; % nb of symbols 
 Fse = 20; %nb of samples
 Te= Ts/Fse; % samples period
 Fe=1/Te;
@@ -77,7 +77,7 @@ for i=1:length(sigma2)
         for j=(Fse/2)+1:Fse 
             p(j) = -0.5;
         end
-
+       
 
         Rl = conv(p,Sl);
         Rl = Rl/Nb;
@@ -138,4 +138,4 @@ semilogy(Eb_N0_db,teb);
 grid on;
 xlabel('rapport Eb/N0 en dB');
 ylabel('TEB');
-title('superposition du TEB avec la probabilité d erreur binaire théorique ');
+title('superposition du TEB avec la Pb théorique');
