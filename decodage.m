@@ -5,19 +5,22 @@ function [message] = decodage(vecteur)
     entiers = '0123456789'; 
     size = 6; 
     len_vecteur = length(vecteur); 
+    j=1;
      
     for i=1:size:(len_vecteur) 
-         
-        
-       valeur = bi2de(vecteur(i:i+size-1), 'left-msb') 
+          
+       valeur = bi2de(vecteur(i:i+size-1), 'left-msb') ;
         
        if valeur >0 && valeur <=26 
-           message(i) = alphabet(valeur); 
+           message(j) = alphabet(valeur); 
        elseif valeur == 32 
-           message(i) = ' '; 
+           message(j) = ' '; 
        elseif valeur >=48 && valeur <=57 
-           message(i) = entiers(valeur-47); 
+           message(j) = entiers(valeur-47); 
        end 
+       
+       j=j+1;
+       
     end    
      
             
