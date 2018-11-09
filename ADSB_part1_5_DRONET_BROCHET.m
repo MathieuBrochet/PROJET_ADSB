@@ -1,17 +1,19 @@
 %% Mathieu Brochet, Elsa Dronet
-
-
 clear all; 
 close all;
 clc;
 
-%% Initialisation 
+%% Initialisation  constante
 Ts = 1*10^-6; % symbol period 
+Tp = 8*Ts;
+Fp = 1/Tp;
 sigma = 1;
+delta_f = 500 ; % délais fréquence 
 Nb = 88; % nb of symbols 
 Fse = 20; %nb of samples
 Te= Ts/Fse; % samples period
 Fe=1/Te;
+Nt = 1/100*Te * ones(1,100*Fse); 
 g=ones(1,Fse);% gÃ©nÃ©ration de g en Ã©chantillonnant au rythme Te
 Eg = sum(g.^2); 
 Eb_N0_db=linspace(0,10,11); % erreur binaire sur No en db 
@@ -19,22 +21,21 @@ Eb_N0 = 10.^(Eb_N0_db/10); %erreur binaire No
 sigma2 = (sigma^2 * Eg) ./ (2*Eb_N0); % variance du bruit blanc
 Sb = randi([0,1],1,Nb); %génération de Nb bit
 p_g = [1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 0 0 0 0 0 0 1 0 0 1]; %polynome du CRC 
+delay_t = 4; %delais en temps (on choisit)
+Pream = [1 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0]; %frequence de 0,5*Fse suréchantillonag
+Pream_f = []; % vecteur qui contient les bits au rythme fse
+DELAY = zeros(1,delay_t);
 
-%% encodage du message 
+%% encodage
 
 CRC = crc.detector(p_g); % creation du crc detector  % partie décodage 
 gen = comm.CRCGenerator(p_g); %creation du crc générator % partie encodage
 Sb=Sb.';  % transpose la matrice
 Sb_encoded=step(gen,Sb); % Sb encodé
 
-%% implémentation du bruit
-Nb = 112; % on change la valeur de Nb pour s'adapter à la nouvelle longeur de Sb après encodage
-for i=1:length(sigma2)
-    nl = sqrt(sigma2(i)).*randn(1,Fse*Nb);
-end 
+Nb = 112;
 %% PPM 
 
-Sl = zeros(1,Fse*Nb); %vector of Sl samples
 p0 = zeros(1,Fse); 
 p1 = zeros(1,Fse);
 
@@ -57,7 +58,59 @@ for k=1:Nb
 end 
 
 
- Sl = reshape(pk.',1,[]) + nl;
+ Sl = reshape(pk.',1,[]);
+
+%% echantillonage au rythme Fse = 20 
+
+for i=1:length(Pream)
+    if Pream(i) ==1 
+        Pream_f(i,:) = ones(10,1);
+    end
+    if Pream(i) == 0
+        Pream_f(i,:) = zeros(10,1);
+    end 
+end
+
+Sp = reshape(Pream_f.',1,[]); % preambule sur-echantillner au rythme Fse
+Sl_final = [Sp Sl]; % ajout du préambule à Sl après la PPm
+
+%% implémentation du bruit
+for i=1:length(sigma2)
+    nl = sqrt(sigma2(i)).*randn(1,length(Sl_final)+delay_t);
+end 
+
+%% ajout du délais à Sl
+Sl_f = [DELAY Sl_final];
+
+%% calcul de Yl
+ time = 1:1:length(Sl_f); % temps 
+ Yl = Sl_f ;
+%  Yl = Sl_f.*exp(-j*2*pi*delta_f*time) + nl;
+%% calcul corrélation :  
+CORR_sp = sqrt(dot(Sp,Sp)); % scalaire integrale sp 
+
+% CORR_num = xcorr(Yl,Sp); % denominateur 
+
+for i=1:100 % taille de variation du delta
+    for j=i+1:length(Yl)
+        CORR_num(j) = sum(Yl(:,j).*Sl_f(:,j-i));
+        CORR_den(j) = sum(abs(Yl(:,j)).^2);
+        CORR_den_f(j) = CORR_sp*sqrt(CORR_den(:,j));
+    end
+end
+
+
+
+CORR = CORR_num./CORR_den_f;
+
+
+
+
+%% recuperation de l'indice 
+
+[Max index] = max(abs(CORR).^2);
+
+% index est la valeure du délais
 
 %% Rl 
 
@@ -110,3 +163,5 @@ else
 end
 noErrors = isequal(Sb, outdata) ;
 Error ;
+
+

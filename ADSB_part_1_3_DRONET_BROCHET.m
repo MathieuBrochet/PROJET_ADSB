@@ -1,12 +1,11 @@
 
-
 clear all; 
 close all;
 clc;
 
 %% Initialisation 
 Ts = 1*10^-6; % symbol period 
-Nb = 1000000; % nb of symbols 
+Nb = 10000; % nb of symbols 
 Fse = 20; %nb of samples
 Te= Ts/Fse; % samples period
 Fe=1/Te;
