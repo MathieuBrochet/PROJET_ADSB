@@ -18,5 +18,5 @@ registre = struct ( 'adresse', [], ...           % de 9 à 32
                     'longitude', [], ...         % de 72 à 88
                     'trajectoire', [] );         % matrice des anciennes (latitude ; longitude) 
                
-vecteur = [ 0 1 0 0 0 0 1 1 0 0 0 1 1 1 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 1];
+vecteur = [ 0 1 0 0 0 0 1 1 0 0 0 1 1 1 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 1 ];
 decodage(vecteur)
