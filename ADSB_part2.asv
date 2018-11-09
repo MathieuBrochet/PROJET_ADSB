@@ -5,4 +5,16 @@ clear all;
 close all;
 clc;
 
-%
+%% 
+
+registre = struct ( 'adresse', [], ...           % de 9 à 33   
+                    'format', [], ...            % 
+                    'type', [], ...              %
+                    'nom', [], ...               %
+                    'altitude', [], ...          % de 42 à 53
+                    'timeFlag', [], ...          % 54
+                    'cprFlag', [], ...           % 55
+                    'latitude', [], ...          % de 56 à 
+                    'longitude', [], ...
+                    'trajectoire', [] );
+               
