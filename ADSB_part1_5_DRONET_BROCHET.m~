@@ -84,11 +84,31 @@ Sl_f = [DELAY Sl_final];
 
 %% calcul de Yl
  time = 1:1:length(Sl_f); % temps 
- Yl = Sl_f.*exp(-j*2*pi*delta_f*time) ;
-%% obtention du delay
+ Yl = Sl_f.*exp() ;
+%% calcul corrélation :  
+CORR_sp = sqrt(dot(Sp,Sp)); % scalaire integrale sp 
 
-delay = synch(Sp,Yl);
 
+for i=1:100 % taille de variation du delta
+    for j=i+1:length(Sp)
+        CORR_num(j) = sum(Yl(:,j).*Sp(:,j-i));
+        CORR_den(j) = sum(abs(Yl(:,j)).^2);
+        CORR_den_f(j) = CORR_sp*sqrt(CORR_den(:,j));
+    end
+end
+
+
+
+CORR = CORR_num./CORR_den_f;
+
+
+
+
+%% recuperation de l'indice 
+
+[Max index] = max(abs(CORR).^2);
+
+% index est la valeure du délais
 
 %% Rl 
 
