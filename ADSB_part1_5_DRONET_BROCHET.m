@@ -8,7 +8,7 @@ Ts = 1*10^-6; % symbol period
 Tp = 8*Ts;
 Fp = 1/Tp;
 sigma = 1;
-delta_f = 500 ; % délais fréquence 
+delta_f = 500 ; % dï¿½lais frï¿½quence 
 Nb = 88; % nb of symbols 
 Fse = 20; %nb of samples
 Te= Ts/Fse; % samples period
@@ -19,19 +19,19 @@ Eg = sum(g.^2);
 Eb_N0_db=linspace(0,10,11); % erreur binaire sur No en db 
 Eb_N0 = 10.^(Eb_N0_db/10); %erreur binaire No
 sigma2 = (sigma^2 * Eg) ./ (2*Eb_N0); % variance du bruit blanc
-Sb = randi([0,1],1,Nb); %génération de Nb bit
+Sb = randi([0,1],1,Nb); %gï¿½nï¿½ration de Nb bit
 p_g = [1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 0 0 0 0 0 0 1 0 0 1]; %polynome du CRC 
 delay_t = 46; %delais en temps (on choisit)
-Pream = [1 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0]; %frequence de 0,5*Fse suréchantillonag
+Pream = [1 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0]; %frequence de 0,5*Fse surï¿½chantillonag
 Pream_f = []; % vecteur qui contient les bits au rythme fse
 DELAY = zeros(1,delay_t);
 
 %% encodage
 
-CRC = crc.detector(p_g); % creation du crc detector  % partie décodage 
-gen = comm.CRCGenerator(p_g); %creation du crc générator % partie encodage
+CRC = crc.detector(p_g); % creation du crc detector  % partie dï¿½codage 
+gen = comm.CRCGenerator(p_g); %creation du crc gï¿½nï¿½rator % partie encodage
 Sb=Sb.';  % transpose la matrice
-Sb_encoded=step(gen,Sb); % Sb encodé
+Sb_encoded=step(gen,Sb); % Sb encodï¿½
 
 Nb = 112;
 %% PPM 
@@ -72,14 +72,14 @@ for i=1:length(Pream)
 end
 
 Sp = reshape(Pream_f.',1,[]); % preambule sur-echantillner au rythme Fse
-Sl_final = [Sp Sl]; % ajout du préambule à Sl après la PPm
+Sl_final = [Sp Sl]; % ajout du prï¿½ambule ï¿½ Sl aprï¿½s la PPm
 
-%% implémentation du bruit
+%% implï¿½mentation du bruit
 for i=1:length(sigma2)
     nl = sqrt(sigma2(i)).*randn(1,length(Sl_final)+delay_t);
 end 
 
-%% ajout du délais à Sl
+%% ajout du dï¿½lais ï¿½ Sl
 Sl_f = [DELAY Sl_final];
 
 %% calcul de Yl
@@ -115,7 +115,7 @@ end
 
 
 
-%% Décision 
+%% Dï¿½cision 
 
 B = zeros(1,Nb); %vector of final bits
 for i=1:Nb
@@ -126,20 +126,24 @@ for i=1:Nb
    end
 end
 
-%% affichage de message intègre ou non
+%% affichage de message intï¿½gre ou non
 B=B.';
 
 
 
-%% Partie décodage
+%% Partie dï¿½codage
 [outdata, Error] = detect(CRC, B); 
 %% test pour affichage
 if Error == 0 
-    disp(' Message intègre'); % équivaut à noErrors = 1
+    disp(' Message intï¿½gre'); % ï¿½quivaut ï¿½ noErrors = 1
 else 
-    disp('Le message n est pas intégre'); % équivaut à noErrors = 0
+    disp('Le message n est pas intï¿½gre'); % ï¿½quivaut ï¿½ noErrors = 0
 end
 noErrors = isequal(Sb, outdata) ;
 Error ;
+index
+delay=index-1 %l'index est le dï¿½but pour lequel le message en rï¿½ception correspond au message envoyï¿½, 
+              % donc le delay est l'index moins 1
+
 
 

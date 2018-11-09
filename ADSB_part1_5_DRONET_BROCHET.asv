@@ -21,7 +21,7 @@ Eb_N0 = 10.^(Eb_N0_db/10); %erreur binaire No
 sigma2 = (sigma^2 * Eg) ./ (2*Eb_N0); % variance du bruit blanc
 Sb = randi([0,1],1,Nb); %génération de Nb bit
 p_g = [1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 0 0 0 0 0 0 1 0 0 1]; %polynome du CRC 
-delay_t = 46; %delais en temps (on choisit)
+delay_t = 4; %delais en temps (on choisit)
 Pream = [1 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0]; %frequence de 0,5*Fse suréchantillonag
 Pream_f = []; % vecteur qui contient les bits au rythme fse
 DELAY = zeros(1,delay_t);
@@ -84,14 +84,16 @@ Sl_f = [DELAY Sl_final];
 
 %% calcul de Yl
  time = 1:1:length(Sl_f); % temps 
- Yl = Sl_f.*exp() ;
+ Yl = Sl_f ;
+%  Yl = Sl_f.*exp(-j*2*pi*delta_f*time) + nl;
 %% calcul corrélation :  
 CORR_sp = sqrt(dot(Sp,Sp)); % scalaire integrale sp 
 
+% CORR_num = xcorr(Yl,Sp); % denominateur 
 
 for i=1:100 % taille de variation du delta
-    for j=i+1:length(Sp)
-        CORR_num(j) = sum(Yl(:,j).*Sp(:,j-i));
+    for j=i+1:length()
+        CORR_num(j) = sum(Yl(:,j).*Sl_f(:,j-i));
         CORR_den(j) = sum(abs(Yl(:,j)).^2);
         CORR_den_f(j) = CORR_sp*sqrt(CORR_den(:,j));
     end
