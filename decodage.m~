@@ -5,9 +5,9 @@ function [message] = decodage(vecteur)
     size = 6;
     len_vecteur = length(vecteur);
     
-    for i=1:size:(len_vecteur)
+    for i=1:size:(len_vecteur)-size
         disp(i)
-        disp(i+size-1)
+        disp(
        valeur = bi2de(vecteur(i:i+size-1), 'left-msb')
        
        if valeur >0 && valeur <=26

@@ -24,8 +24,7 @@ function [registre] = bit2registre(vecteur, registre)
             registre.longitude = vecteur(72:88);
             registre.trajectoire = [registre.trajectoire ; registre.latitude registre.longitude];
             
-        end
-      'é'
+            end
         disp('registre mis à jour');
     else
         disp('CRC faux, message pas integre');
