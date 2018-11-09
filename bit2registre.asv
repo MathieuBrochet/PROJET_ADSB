@@ -1,0 +1,4 @@
+function [y] = bit2registre(vecteur, )
+
+
+end

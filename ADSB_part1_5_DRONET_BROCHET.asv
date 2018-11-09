@@ -84,15 +84,16 @@ Sl_f = [DELAY Sl_final];
 
 %% calcul de Yl
  time = 1:1:length(Sl_f); % temps 
- Yl = Sl_f.*exp(-j*2*pi*delta_f*time);
+ Yl = Sl_f ;
+%  Yl = Sl_f.*exp(-j*2*pi*delta_f*time) + nl;
 %% calcul corrélation :  
 CORR_sp = sqrt(dot(Sp,Sp)); % scalaire integrale sp 
 
 % CORR_num = xcorr(Yl,Sp); % denominateur 
 
 for i=1:100 % taille de variation du delta
-    for j=i+1:length(Sp)
-        CORR_num(j) = sum(Yl(:,j).*Sp(:,j-i));
+    for j=i+1:length()
+        CORR_num(j) = sum(Yl(:,j).*Sl_f(:,j-i));
         CORR_den(j) = sum(abs(Yl(:,j)).^2);
         CORR_den_f(j) = CORR_sp*sqrt(CORR_den(:,j));
     end
@@ -162,9 +163,5 @@ else
 end
 noErrors = isequal(Sb, outdata) ;
 Error ;
-index
-delay=index-1 %l'index est le début pour lequel le message en réception correspond au message envoyé, 
-              % donc le delay est l'index moins 1
-
 
 
