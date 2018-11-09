@@ -1,0 +1,21 @@
+function [message] = decodage(vecteur)
+
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    entiers = '0123456789';
+    size = 6;
+    len_vecteur = length(vecteur);
+    %message = zeros(1, len_vecteur/6);
+    
+    for i=1:(len_vecteur-6)
+       valeur = bi2de(vecteur(i:i+6), 2, 'left-msb'); 
+       
+       if valeur >0 && valeur <=26
+           message(i) = alphabet(valeur);
+       else if valeur == 32
+           message(i) = ' ';
+       else if valeur >0 && valeur <=26
+               
+       end
+    end
+    
+end

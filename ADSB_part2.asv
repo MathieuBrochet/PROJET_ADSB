@@ -5,16 +5,17 @@ clear all;
 close all;
 clc;
 
-%% 
+%% Structure de registre
 
-registre = struct ( 'adresse', [], ...           % de 9 à 33   
-                    'format', [], ...            % 
-                    'type', [], ...              %
-                    'nom', [], ...               %
-                    'altitude', [], ...          % de 42 à 53
-                    'timeFlag', [], ...          % 54
-                    'cprFlag', [], ...           % 55
-                    'latitude', [], ...          % de 56 à 
-                    'longitude', [], ...
-                    'trajectoire', [] );
+registre = struct ( 'adresse', [], ...           % de 9 à 32   
+                    'format', [], ...            % de 1 à 5
+                    'type', [], ...              % de 33 à 38
+                    'nom', [], ...               % adresse
+                    'altitude', [], ...          % de 41 à 52
+                    'timeFlag', [], ...          % 53
+                    'cprFlag', [], ...           % 54
+                    'latitude', [], ...          % de 55 à 71
+                    'longitude', [], ...         % de 72 à 88
+                    'trajectoire', [] );         % matrice des anciennes (latitude ; longitude) 
                
+vecteur 
