@@ -106,7 +106,7 @@ B=B.';
 if Error == 0 
     disp(' Message intègre'); % équivaut à noErrors = 1
 else 
-    disp('Le message n est pas intégre'); % équivaut à noErrors = 0
+    disp('Le message n est pas intègre'); % équivaut à noErrors = 0
 end
 noErrors = isequal(Sb, outdata) ;
 Error ;
