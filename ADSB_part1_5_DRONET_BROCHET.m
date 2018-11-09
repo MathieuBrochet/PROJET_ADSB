@@ -141,9 +141,7 @@ else
 end
 noErrors = isequal(Sb, outdata) ;
 Error ;
-index
-delay=index-1 %l'index est le d�but pour lequel le message en r�ception correspond au message envoy�, 
-              % donc le delay est l'index moins 1
+
 
 
 
