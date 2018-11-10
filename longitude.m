@@ -1,7 +1,7 @@
 function[y] = longitude(vecteur,CPR,latitude)
 %% constante
 
-long_ref = 0;
+long_ref = -0.606629;
 Nb = 17;
 
 

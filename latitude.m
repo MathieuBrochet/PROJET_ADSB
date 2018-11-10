@@ -1,7 +1,8 @@
 function[y] = latitude(vecteur, CPR)
 %% constante
 Nz = 15;
-lat_ref = 0;
+
+lat_ref = 44.806884;
 Nb = 17;
 %% latitude
 Dlat = 360/(4*Nz-CPR);
