@@ -1,32 +1,28 @@
-function [registre] = bit2registre(vecteur, registre)
-    crc = vecteur(89:112);
-    
-    p_g = [1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 0 0 0 0 0 0 1 0 0 1]; %polynome du CRC 
-    CRC = crc.detector(p_g); % creation du crc detector  % partie décodage 
+function [registre] = bit2registre(vecteur, registre,Error)
+%% CRC
 
-    [outdata, Error] = detect(CRC, crc);
-    Error;
-    
+%%   Mise à jour du registre
     if Error == 0 
         disp('message integre');
-        registre.format = vecteur(1:5);
-        
-        if registre.format >1 0 && registre.format <= 4
-            registre.nom = vecteur(41:88)
-            
-        else if registre.format >=9 && registre.format <=23
-            registre.adresse = vecteur(9:32);
-            registre.type = vecteur(33:58);
-            registre.altitude = vecteur(41:52);
-            registre.timeFlag = vecteur(53);
-            registre.cprFlag = vecteur(54);
-            registre.latitude = vecteur(55:71);
-            registre.longitude = vecteur(72:88);
-            registre.trajectoire = [registre.trajectoire ; registre.latitude registre.longitude];
-            
+         registre.format = bi2de(vecteur(1:5),'left-msb');      
+        if registre.format  == 17
+            disp('Trame ADSB');
+            registre.adresse = decodage(vecteur(9:32)); 
+            registre.type = bi2de(vecteur(33:37),'left-msb');
+            if registre.type >=1 & registre.type <=4 %message id
+                registre.nom = decodage(vecteur(41:88));
+            elseif registre.type >=9 & registre.type <=22 %message postion vol
+                registre.altitude = altitude(vecteur(41:52)); %utilisation de fonction altitude
+                registre.timeFlag = vecteur(53);
+                registre.cprFlag =  vecteur(54);
+                registre.latitude = latitude(vecteur(55:71),vecteur(54));
+                registre.longitude = longitude(vecteur(72:88),vecteur(54),registre.latitude);
+                registre.trajectoire = [registre.trajectoire ; registre.latitude registre.longitude];
+            end
+            disp('registre mis à jour');
+        else
+            disp('Ce n est pas une trame ADSB');
         end
-      'é'
-        disp('registre mis à jour');
     else
         disp('CRC faux, message pas integre');
     end
