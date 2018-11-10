@@ -15,7 +15,7 @@ function [registre] = bit2registre(vecteur, registre,Error)
                 registre.altitude = altitude(vecteur(41:52)); %utilisation de fonction altitude
                 registre.timeFlag = vecteur(53);
                 registre.cprFlag =  vecteur(54);
-                registre.latitude = abs(latitude(vecteur(55:71),vecteur(54))); %abs sinon bizare
+                registre.latitude = abslatitude(vecteur(55:71),vecteur(54));
                 registre.longitude = longitude(vecteur(72:88),vecteur(54),registre.latitude);
                 registre.trajectoire = [registre.latitude registre.longitude];
             end

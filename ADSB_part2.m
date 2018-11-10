@@ -25,6 +25,8 @@ registre = struct ( 'adresse', [], ...           % de 9 à 32
                 
                 
 vecteur = load('adsb_msgs.mat');
+carte  = (imread('fond.jpg'));
+
 %% initialisation 
 val_nb_trame = length(vecteur.adsb_msgs(1,:));
 registre_total = registre;
@@ -38,4 +40,9 @@ for i=1:val_nb_trame
     registre_new  = bit2registre(vecteur_int,registre,Error);
     registre_total = [registre_total registre_new];
 end
+
+
+figure(1);
+imshow(carte);
+
 
