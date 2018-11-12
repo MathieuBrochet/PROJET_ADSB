@@ -50,11 +50,17 @@ for i=1:val_nb_trame
     vecteur_int = vecteur.adsb_msgs(:,i); % oon récupere le premier message pour test
     [outdata, Error] = detect(CRC, vecteur_int);
     vecteur_int = vecteur_int.';
-    registre_new  = bit2registre(vecteur_int,registre,Error);
-    registre_total = [registre_total registre_new];
+    registre  =  bit2registre(vecteur_int,registre,Error);
+    registre_total = [registre registre];
+    
 end
 
+registre = registre_total(1);
 
 
+trajectoire_y = registre(1).trajectoire(:,1);  
+trajectoire_x = registre(1).trajectoire(:,2); % probleme longitude 
+
+plot(x,y);
 
 

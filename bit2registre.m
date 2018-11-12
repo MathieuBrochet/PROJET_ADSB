@@ -17,7 +17,7 @@ function [registre] = bit2registre(vecteur, registre,Error)
                 registre.cprFlag =  vecteur(54);
                 registre.latitude = abs(latitude(vecteur(55:71),vecteur(54))); %abs sinon bizare
                 registre.longitude = longitude(vecteur(72:88),vecteur(54),registre.latitude);
-                registre.trajectoire = [registre.latitude registre.longitude];
+                registre.trajectoire = [registre.trajectoire ;registre.latitude registre.longitude];
             end
             disp('registre mis à jour');
         else
@@ -26,6 +26,8 @@ function [registre] = bit2registre(vecteur, registre,Error)
     else
         disp('CRC faux, message pas integre');
     end
+    
+    
     
    
 end
