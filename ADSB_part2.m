@@ -51,16 +51,15 @@ for i=1:val_nb_trame
     [outdata, Error] = detect(CRC, vecteur_int);
     vecteur_int = vecteur_int.';
     registre  =  bit2registre(vecteur_int,registre,Error);
-    registre_total = [registre registre];
+    registre_total = [registre];
     
 end
 
-registre = registre_total(1);
 
 
-trajectoire_y = registre(1).trajectoire(:,1);  
-trajectoire_x = registre(1).trajectoire(:,2); % probleme longitude 
+trajectoire_y = registre_total(1).trajectoire(:,1);  
+trajectoire_x = registre_total(1).trajectoire(:,2); % probleme longitude 
 
-plot(x,y);
+plot(trajectoire_x,trajectoire_y,'r');
 
 
