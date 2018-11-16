@@ -84,10 +84,10 @@ Sl_f = [DELAY Sl_final];
 
 %% calcul de Yl
  time = 1:1:length(Sl_f); % temps 
- Yl = Sl_f.*exp(-j*2*pi*delta_f*time) ;
+ Yl = Sl_f.*exp(-1i*2*pi*delta_f*time) ;
 %% obtention du delay
 
-delay = synch(Sp,Yl);
+[delay ] = synch(Sp,abs(Yl));
 
 
 %% Rl 
@@ -126,18 +126,18 @@ for i=1:Nb
    end
 end
 
-%% affichage de message int�gre ou non
+%% affichage de message integre ou non
 B=B.';
 
 
 
-%% Partie d�codage
+%% Partie decodage
 [outdata, Error] = detect(CRC, B); 
 %% test pour affichage
 if Error == 0 
-    disp(' Message int�gre'); % �quivaut � noErrors = 1
+    disp(' Message integre'); % �quivaut � noErrors = 1
 else 
-    disp('Le message n est pas int�gre'); % �quivaut � noErrors = 0
+    disp('Le message n est pas integre'); % �quivaut � noErrors = 0
 end
 noErrors = isequal(Sb, outdata) ;
 Error ;
